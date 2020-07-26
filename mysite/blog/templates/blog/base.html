@@ -1,12 +1,9 @@
-{% load static %}
+{% load blog_tags %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %} {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/blog.css' %} " />
   </head>
@@ -15,8 +12,25 @@
       {% block content %} {% endblock %}
     </div>
     <div id="sidebar">
-      <h2>My blog</h2>
-      <p>This is my blog.</p>
+      <h2>
+        <a href="{% url 'blog:post_list' %} ">My blog</a>
+      </h2>
+      <p>{% total_posts %} posts published so far</p>
+      <p>
+        <a href="{% url 'blog:post_feed' %} ">Subscribe to my RSS feed</a>
+      </p>
+      <h3>Latest Posts</h3>
+      {% show_latest_posts 3 %}
+
+      <h3>Most commented posts</h3>
+      {% get_most_commented_posts as most_commented %}
+      <ul>
+        {% for post in most_commented %}
+        <li>
+          <a href=" {{post.get_absolute_url}} ">{{post.title}}</a>
+        </li>
+        {%endfor%}
+      </ul>
     </div>
   </body>
 </html>
